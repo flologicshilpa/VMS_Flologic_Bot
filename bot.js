@@ -222,6 +222,12 @@ bot.dialog('GreetingDialog',[
        var name=session.message.user.name;
         var id=session.message.user.id;
        var token1 = session.message.user.token;
+         auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
+     
+
+        session.conversationData[GlobalADID]=id;        
+        //session.conversationData[GloabalIntent] = intent.intent;       
+        session.send('Hello  %s! Welcome to Vendor Bot.',name);
 
         session.conversationData.botID="11";
         session.conversationData.botName=jsonParse.address.bot.name;
@@ -237,12 +243,7 @@ bot.dialog('GreetingDialog',[
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
         createFamilyItem(BotID, ConversationId,UserId,UserName,session.message.text,"UserResponse");      
-        auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
-     
-
-        session.conversationData[GlobalADID]=id;        
-        //session.conversationData[GloabalIntent] = intent.intent;       
-        session.send('Hello  %s! Welcome to Vendor Bot.',name);
+       
 
    var card = {  
        
