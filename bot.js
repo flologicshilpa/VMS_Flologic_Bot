@@ -193,7 +193,7 @@ bot.dialog('GreetingDialog',[
        var token1 = session.message.user.token;
        auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
      
-        session.send("%s",jsonParse);
+        session.send("%s",jsonData);
      
         session.conversationData[GlobalADID]=id;        
         //session.conversationData[GloabalIntent] = intent.intent;       
