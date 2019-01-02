@@ -241,7 +241,7 @@ bot.dialog('GreetingDialog',[
      
 
         session.conversationData[GlobalADID]=id;        
-        session.conversationData[GloabalIntent] = intent.intent;       
+        //session.conversationData[GloabalIntent] = intent.intent;       
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
 
    var card = {  
