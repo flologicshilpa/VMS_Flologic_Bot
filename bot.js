@@ -6,7 +6,7 @@ const builder = require('botbuilder');
 
 const CosmosClient = require('@azure/cosmos').CosmosClient;
 const config = require('./config');
-const url = require('url');
+//const url = require('url');
 const endpoint = config.endpoint;
 const masterKey = config.primaryKey;
 const client = new CosmosClient({ endpoint: endpoint, auth: { masterKey: masterKey } });
@@ -74,16 +74,16 @@ var conversationid="conversationid";
 //for cosmos db
 
 
-//  var documentDbOptions = {
-//      host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
-//      masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
-//     database: 'botdocs',   
-//     collection: 'botdata'
-//  };
+ var documentDbOptions = {
+     host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
+     masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
+    database: 'botdocs',   
+    collection: 'botdata'
+ };
 
-// var docDbClient = new azure.DocumentDbClient(documentDbOptions);
+var docDbClient = new azure.DocumentDbClient(documentDbOptions);
 
-// var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
+var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
 
 
 
@@ -124,8 +124,7 @@ const  bot = module.exports =  new builder.UniversalBot(connector, function (ses
      var reply = createEvent("changeBackground", session.message.text, session.message.address);
         session.endDialog(reply);
 
- });
- //.set('storage', cosmosStorage); 
+ }).set('storage', cosmosStorage); 
 
 
 //LUIS Connection
@@ -140,25 +139,25 @@ bot.recognizer(recognizer);
 bot.set('persistUserData', true);
 bot.set('persistConversationData', true);
 
-//Middleware for logging
-bot.use({
-    receive: function (event, next,session) {
+// //Middleware for logging
+// bot.use({
+//     receive: function (event, next,session) {
         
-        logUserConversation(event);
-        next();
-    },
-    send: function (event, next,session) {
-        logUserConversation(event);       
-        next();
-    }
-});
+//         logUserConversation(event);
+//         next();
+//     },
+//     send: function (event, next,session) {
+//         logUserConversation(event);       
+//         next();
+//     }
+// });
          
-var logUserConversation = (event) => {
-    console.log('message: ' + event.text + ', user: ' + event.address.user.name);    
-};
+// var logUserConversation = (event) => {
+//     console.log('message: ' + event.text + ', user: ' + event.address.user.name);    
+// };
 
 function createFamilyItem(BotId,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
-    var start = new Date;
+   // var start = new Date;
      
      //var id=new Date().getTime();
     // console.log('id 55',id);
@@ -215,6 +214,7 @@ bot.on("event",function(event) {
 //greeting dialog
 bot.dialog('GreetingDialog',[
     function (session, args, next) {
+        session.send("welocome  greeting");
 
        var jsonData = JSON.stringify(session.message);
        var jsonParse = JSON.parse(jsonData);
