@@ -39,7 +39,7 @@ var qnaClient = new QnAClient({
 
 
 //for cosmos db
-var azure = require('botbuilder-azure');
+//var azure = require('botbuilder-azure');
 
 const connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
@@ -75,49 +75,16 @@ var conversationid="conversationid";
 //for cosmos db
 
 
- var documentDbOptions = {
-     host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
-     masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
-    database: 'botdocs',   
-    collection: 'botdata'
- };
+//  var documentDbOptions = {
+//      host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
+//      masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
+//      database: 'botdocs',   
+//      collection: 'botdata'
+//  };
 
-var docDbClient = new azure.DocumentDbClient(documentDbOptions);
+// var docDbClient = new azure.DocumentDbClient(documentDbOptions);
 
-var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
-
-
-
-
-
-
-
-
-
-//create family item
-/**
-* Create family item if it does not exist
-*/
-// async function createFamilyItem(itemBody) {
-//     try {
-//         // read the item to see if it exists
-//         const { item } = await client.database(databaseId).container(containerId).item(itemBody.id).read();
-//         console.log(`Item with family id ${itemBody.id} already exists\n`);
-//     }
-//     catch (error) {
-//        // create the family item if it does not exist
-//        if (error.code === HttpStatusCodes.NOTFOUND) {
-//            const { item } = await client.database(databaseId).container(containerId).items.create(itemBody);
-//            console.log(`Created family item with id:\n${itemBody.id}\n`);
-//        } else {
-//            throw error;
-//        }
-//     }
-//   };
-
-
-
-
+// var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
 
 
 //universal bot connection
@@ -125,7 +92,8 @@ const  bot = module.exports =  new builder.UniversalBot(connector, function (ses
      var reply = createEvent("changeBackground", session.message.text, session.message.address);
         session.endDialog(reply);
 
- }).set('storage', cosmosStorage); 
+ });
+//.set('storage', cosmosStorage); 
 
 
 //LUIS Connection
