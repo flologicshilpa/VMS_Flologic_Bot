@@ -3453,7 +3453,7 @@ function createFamilyItem(BotId,BotName,ConversationId,UserId,UserName,UserQuery
     var date = new Date;
         // "currentDate":start.toISOString()
         var datetime = new Date().getTime();
-    var createdid = BotName + "/" + BotId + "|"+ UserId + "|" + datetime;
+    var createdid = BotName + "|"+ UserId + "|" + datetime;
     console.log("createdid",createdid);
     var documentDefinition = {"id":createdid,
       "data": { 
