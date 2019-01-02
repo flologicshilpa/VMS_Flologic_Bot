@@ -50,9 +50,7 @@ var Request = require("request");
 //common variable
 var i,intent="",entity,gstentity,panentity;
 var auth;
-var id;
-var token1;
-var name;
+
 
 //variable declaration for session
 var Gloabalentity1="Gloabalentity1";
@@ -221,9 +219,9 @@ bot.dialog('GreetingDialog',[
        var jsonData = JSON.stringify(session.message);
        var jsonParse = JSON.parse(jsonData);
 
-        name=session.message.user.name;
-        id=session.message.user.id;
-        token1 = session.message.user.token;
+       var name=session.message.user.name;
+        var id=session.message.user.id;
+       var token1 = session.message.user.token;
 
         session.conversationData.botID="11";
         session.conversationData.botName=jsonParse.address.bot.name;
@@ -239,7 +237,7 @@ bot.dialog('GreetingDialog',[
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
         createFamilyItem(BotID, ConversationId,UserId,UserName,session.message.text,"UserResponse");      
-        auth = "Basic " + new Buffer("NSAMARTH" + ":" + "1234567890").toString("base64");  
+        auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
      
 
         session.conversationData[GlobalADID]=id;        
