@@ -17,6 +17,7 @@ var databaseId = config.database.id;
 var containerId = config.container.id;
 
 var BotID;
+var BotName;
 var UserId;
 var UserName;
 var ConversationId;
@@ -199,17 +200,19 @@ bot.dialog('GreetingDialog',[
         //session.conversationData[GloabalIntent] = intent.intent;       
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
 
-        session.conversationData.botID="11";
-       // session.conversationData.botName=jsonParse.address.bot.name;
+        session.conversationData.botID=jsonParse.address.bot.id;
+        session.conversationData.botName=jsonParse.address.bot.name;
         session.conversationData.userName=name;
         session.conversationData.userID=id;
         session.conversationData.conversationID=jsonParse.address.conversation.id;
        
+        
         BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-       // session.send("botid=%s UserName=%s UserId=%s ConversationId=%s",BotID,UserName,UserId,ConversationId);
+       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s",BotID,BotName,UserName,UserId,ConversationId);
         
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
