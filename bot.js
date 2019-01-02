@@ -214,16 +214,14 @@ bot.dialog('GreetingDialog',[
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-          var date = new Date;
-        // "currentDate":start.toISOString()
-        var datetime = new Date().getTime();
+         
 
         
-       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
         
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
-        createFamilyItem(BotID,ConversationId,UserId,UserName,session.message.text,"UserResponse");      
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");      
        
 
    var card = {  
@@ -309,8 +307,7 @@ bot.dialog('AllDetailsDialog',[
     function (session, args, next) {
 
        var jsonData = JSON.stringify(session.message);
-         var jsonParse = JSON.parse(jsonData);
-        
+         var jsonParse = JSON.parse(jsonData);       
         
 
         session.conversationData.botID=jsonParse.address.bot.id;
@@ -327,13 +324,10 @@ bot.dialog('AllDetailsDialog',[
         ConversationId=session.conversationData.conversationID;
        session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s",BotID,BotName,UserName,UserId,ConversationId);
         
-    
+       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse"); 
      
        
-        //createFamilyItem(session.userData.botID, session.userData.conversationID, session.userData.userID,session.userData.userName,session.message.text,"UserResponse");      
-
-        //session.conversationData[conversationid]=session.conversationData.id;
-        session.conversationData[userquestion]=session.message.text;
+        
 
        //name not present in query
         if(args.Entity==true)
@@ -3455,14 +3449,13 @@ function getstatusURL(session,status)
 }
 
 
-function createFamilyItem(BotId,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
-   // var start = new Date;
-     // "currentDate":start.toISOString()
-     var start=new Date().getTime();
-    // console.log('id 55',id);
-    // console.log('enter 55'+qsn+" ans :"+ans+" date :-",start.toISOString());
-    //session.send("welcome to createfamilyitem");
-    var documentDefinition = {"id": ConversationId + "|ChatingData"+",conversationData",
+function createFamilyItem(BotId,BotName,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
+    var date = new Date;
+        // "currentDate":start.toISOString()
+        var datetime = new Date().getTime();
+    var createdid=BotName + "/" + BotId + "|"+ UserId + "|" + datetime;
+    
+    var documentDefinition = {"id":createdid",
       "data": { 
         "BotId":BotId,
         "ConversationId":ConversationId,
