@@ -186,16 +186,15 @@ bot.dialog('GreetingDialog',[
     function (session, args, next) {
         session.send("welocome  greeting");
 
-       var jsonData = JSON.stringify(session.message);
-       var jsonParse = JSON.parse(jsonData);
-
+      
        var name=session.message.user.name;
        var id=session.message.user.id;
        var token1 = session.message.user.token;
        auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
      
-        session.send("%s",jsonData);
-     
+         var jsonData = JSON.stringify(session.message);
+         var jsonParse = JSON.parse(jsonData);
+        
         session.conversationData[GlobalADID]=id;        
         //session.conversationData[GloabalIntent] = intent.intent;       
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
@@ -301,14 +300,25 @@ var str3="";
 bot.dialog('AllDetailsDialog',[
     function (session, args, next) {
 
-        BotID="12";
+       var jsonData = JSON.stringify(session.message);
+         var jsonParse = JSON.parse(jsonData);
+        
+        
+
+        session.conversationData.botID=jsonParse.address.bot.id;
+        session.conversationData.botName=jsonParse.address.bot.name;
+        session.conversationData.userName=name;
+        session.conversationData.userID=id;
+        session.conversationData.conversationID=jsonParse.address.conversation.id;
+       
+        
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-         
-       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
- 
-         createFamilyItem(BotID, ConversationId,UserId,UserName,session.message.text,"UserResponse");   
+       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s",BotID,BotName,UserName,UserId,ConversationId);
+        
     
      
        
