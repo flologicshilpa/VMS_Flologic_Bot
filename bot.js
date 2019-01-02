@@ -230,15 +230,16 @@ bot.dialog('GreetingDialog',[
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
 
         session.conversationData.botID="11";
-        session.conversationData.botName=jsonParse.address.bot.name;
-        session.conversationData.userName=jsonParse.address.user.name;
-        session.conversationData.userID=jsonParse.address.user.id;
+       // session.conversationData.botName=jsonParse.address.bot.name;
+        session.conversationData.userName=name;
+        session.conversationData.userID=id;
         session.conversationData.conversationID=jsonParse.address.conversation.id;
        
         BotID=session.conversationData.botID;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
+        session.send("botid=%s UserName=%s UserId=%s ConversationId=%s",BotID,UserName,UserId,ConversationId);
         
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
