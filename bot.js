@@ -307,8 +307,8 @@ bot.dialog('AllDetailsDialog',[
 
         session.conversationData.botID=jsonParse.address.bot.id;
         session.conversationData.botName=jsonParse.address.bot.name;
-        session.conversationData.userName=name;
-        session.conversationData.userID=id;
+       // session.conversationData.userName=name;
+       // session.conversationData.userID=id;
         session.conversationData.conversationID=jsonParse.address.conversation.id;
        
         
