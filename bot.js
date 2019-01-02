@@ -238,7 +238,7 @@ bot.dialog('AllDetailsDialog',[
     function (session, args, next) {
 
        BotID=session.conversationData.botID;
-       BotName=jsonParse.address.bot.name;
+       BotName= session.conversationData.botName;
        UserName= session.conversationData.userName;
        UserId=session.conversationData.userID;
        ConversationId=session.conversationData.conversationID;
@@ -518,7 +518,7 @@ bot.dialog('GSTandPAN_NoDialog',[
 
 
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName=session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
@@ -825,7 +825,7 @@ bot.dialog('ExtensionDialog',[
     function (session, args, next) {
 
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
@@ -1022,7 +1022,7 @@ bot.dialog('AllDocumentDialog',[
 
         //for cosmos db storage
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;     
@@ -1273,7 +1273,7 @@ bot.dialog('MaterialDialog',[
 
         //for cosmos db storage
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;     
@@ -1452,7 +1452,7 @@ bot.dialog('ServiceDialog',[
 
         //for cosmos db storage
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;     
@@ -1595,7 +1595,7 @@ bot.dialog('RequestDetailsDialog',[
 
         //for cosmos db storage
         BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
+        BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;     
