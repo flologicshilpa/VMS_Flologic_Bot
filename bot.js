@@ -191,7 +191,7 @@ bot.dialog('GreetingDialog',[
        var name=session.message.user.name;
         var id=session.message.user.id;
        var token1 = session.message.user.token;
-         auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
+       auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
      
 
         session.conversationData[GlobalADID]=id;        
@@ -208,7 +208,7 @@ bot.dialog('GreetingDialog',[
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-        session.send("botid=%s UserName=%s UserId=%s ConversationId=%s",BotID,UserName,UserId,ConversationId);
+       // session.send("botid=%s UserName=%s UserId=%s ConversationId=%s",BotID,UserName,UserId,ConversationId);
         
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
@@ -263,43 +263,6 @@ bot.dialog('GreetingDialog',[
     matches: 'Vendor.Greeting'
 })
 
-function createFamilyItem(BotId,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
-   // var start = new Date;
-     // "currentDate":start.toISOString()
-     //var id=new Date().getTime();
-    // console.log('id 55',id);
-    // console.log('enter 55'+qsn+" ans :"+ans+" date :-",start.toISOString());
-    //session.send("welcome to createfamilyitem");
-    var documentDefinition = {"id": "Flologic"+ BotId + "|ChatingData"+",conversationData",
-      "data": { 
-        "BotId":BotId,
-        "ConversationId":ConversationId,
-        "UserID": UserId,
-        "UserName": UserName,
-        "UserQuery":UserQuery,
-        "UserResponse":UserResponse
-       
-   }};
-//   console.log('documentDefinition 39:-',documentDefinition);
-//   console.log('enter endpointkey',endpoint);
-//     console.log('enter endpointmasterkey',masterKey);
-//       console.log('enter database id',databaseId);
-//         console.log('enter container id',containerId);
-
-   try {
-     var { item } =  client.database(databaseId).container(containerId).items.create(documentDefinition);
-           console.log(`Created family item with id:\n${documentDefinition.id}\n`);      
-   }
-   catch (error) {
-     console.log('Somthing getting worng',error);     
-   }
-  };
-
-
-
-
-
-
 
 //end Conversation Dialog
 bot.dialog('endConversationDialog',[
@@ -341,13 +304,13 @@ bot.dialog('AllDetailsDialog',[
          
        //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
  
-         createFamilyItem(BotID, ConversationId,UserId, UserName,session.message.text,"UserResponse");      
+         createFamilyItem(BotID, ConversationId,UserId,UserName,session.message.text,"UserResponse");   
     
      
        
         //createFamilyItem(session.userData.botID, session.userData.conversationID, session.userData.userID,session.userData.userName,session.message.text,"UserResponse");      
 
-        session.conversationData[conversationid]=session.conversationData.id;
+        //session.conversationData[conversationid]=session.conversationData.id;
         session.conversationData[userquestion]=session.message.text;
 
        //name not present in query
@@ -3468,3 +3431,34 @@ function getstatusURL(session,status)
     }
     return url;
 }
+
+
+function createFamilyItem(BotId,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
+   // var start = new Date;
+     // "currentDate":start.toISOString()
+     //var id=new Date().getTime();
+    // console.log('id 55',id);
+    // console.log('enter 55'+qsn+" ans :"+ans+" date :-",start.toISOString());
+    //session.send("welcome to createfamilyitem");
+    var documentDefinition = {"id": ConversationId + "|ChatingData"+",conversationData",
+      "data": { 
+        "BotId":BotId,
+        "ConversationId":ConversationId,
+        "UserID": UserId,
+        "UserName": UserName,
+        "UserQuery":UserQuery,
+        "UserResponse":UserResponse
+       
+   }};
+
+
+   try {
+     var { item } =  client.database(databaseId).container(containerId).items.create(documentDefinition);
+           console.log(`Created family item with id:\n${documentDefinition.id}\n`);      
+   }
+   catch (error) {
+     console.log('Somthing getting worng',error);     
+   }
+  };
+
+
