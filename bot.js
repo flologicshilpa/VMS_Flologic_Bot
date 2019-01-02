@@ -198,7 +198,10 @@ bot.dialog('GreetingDialog',[
         session.conversationData[GlobalADID]=id;        
         //session.conversationData[GloabalIntent] = intent.intent;       
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
-
+        
+        
+        
+      
         session.conversationData.botID=jsonParse.address.bot.id;
         session.conversationData.botName=jsonParse.address.bot.name;
         session.conversationData.userName=name;
@@ -211,7 +214,12 @@ bot.dialog('GreetingDialog',[
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s",BotID,BotName,UserName,UserId,ConversationId);
+          var date = new Date;
+        // "currentDate":start.toISOString()
+        var datetime = new Date().getTime();
+
+        
+       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
         
       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
 
