@@ -94,6 +94,8 @@ const  bot = module.exports =  new builder.UniversalBot(connector, function (ses
 
  }).set('storage', cosmosStorage); 
 
+ bot.set('persistUserData', true);
+ bot.set('persistConversationData', true);
 
 //LUIS Connection
 const LuisModelUrl1 = process.env.LuisModelUrl || process.env.baseUrl; //'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/78c89f64-d5c0-4def-91fb-8e453e5c3178?subscription-key=1cf14806be4141c683bceffbec7d01b3&verbose=true';
@@ -102,38 +104,6 @@ const LuisModelUrl1 = process.env.LuisModelUrl || process.env.baseUrl; //'https:
 var recognizer = new builder.LuisRecognizer(LuisModelUrl1);
 bot.recognizer(recognizer);
 
-
-
-bot.set('persistUserData', true);
-bot.set('persistConversationData', true);
-
-// //Middleware for logging
-// bot.use({
-//     receive: function (event, next,session) {
-        
-//         logUserConversation(event);
-//         next();
-//     },
-//     send: function (event, next,session) {
-//         logUserConversation(event);       
-//         next();
-//     }
-// });
-         
-// var logUserConversation = (event) => {
-//     console.log('message: ' + event.text + ', user: ' + event.address.user.name);    
-// };
-
-
- //call this event for after click on refresh button  form vendor bot window
- 
-const createEvent = (eventName, value, address) => {
-    var msg = new builder.Message().address(address);
-    msg.data.type = "event";
-    msg.data.name = eventName;
-    msg.data.value = value;
-    return msg;
-}
 
 bot.on("event",function(event) {
     //console.log("message",event);
@@ -151,24 +121,21 @@ bot.on("event",function(event) {
 //greeting dialog
 bot.dialog('GreetingDialog',[
     function (session, args, next) {
-        session.send("welocome  greeting");
-
-      
+       
        var name=session.message.user.name;
        var id=session.message.user.id;
        var token1 = session.message.user.token;
+
        auth = "Basic " + new Buffer(id + ":" + token1).toString("base64");  
      
-         var jsonData = JSON.stringify(session.message);
-         var jsonParse = JSON.parse(jsonData);
-        session.send("%s",jsonData);
-        
         session.conversationData[GlobalADID]=id;        
         //session.conversationData[GloabalIntent] = intent.intent;       
         session.send('Hello  %s! Welcome to Vendor Bot.',name);
         
         
-        
+        //data for CosmosDbStorage
+        var jsonData = JSON.stringify(session.message);
+        var jsonParse = JSON.parse(jsonData);
       
         session.conversationData.botID=jsonParse.address.bot.id;
         session.conversationData.botName=jsonParse.address.bot.name;
@@ -182,13 +149,9 @@ bot.dialog('GreetingDialog',[
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-         
-
-        
+                 
       // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
-        
-      //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
-
+      
         createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");      
        
 
@@ -274,29 +237,16 @@ var str3="";
 bot.dialog('AllDetailsDialog',[
     function (session, args, next) {
 
-       var jsonData = JSON.stringify(session.message);
-         var jsonParse = JSON.parse(jsonData);       
-        
-
-        session.conversationData.botID=jsonParse.address.bot.id;
-        session.conversationData.botName=jsonParse.address.bot.name;
-       // session.conversationData.userName=name;
-       // session.conversationData.userID=id;
-        session.conversationData.conversationID=jsonParse.address.conversation.id;
-       
-        
-        BotID=session.conversationData.botID;
-        BotName=jsonParse.address.bot.name;
-        UserName= session.conversationData.userName;
-        UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;
-       session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s",BotID,BotName,UserName,UserId,ConversationId);
-        
-       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse"); 
+       BotID=session.conversationData.botID;
+       BotName=jsonParse.address.bot.name;
+       UserName= session.conversationData.userName;
+       UserId=session.conversationData.userID;
+       ConversationId=session.conversationData.conversationID;
+                
+     // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
      
-       
-        
-
+       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+     
        //name not present in query
         if(args.Entity==true)
         {                
@@ -512,12 +462,6 @@ bot.dialog('AllDetailsDialog',[
            }
         
         } 
-        
-        
-
-
-
-
     },
     //Get Data for selected name
       function (session, results) { 
@@ -572,18 +516,16 @@ bot.dialog('AllDetailsDialog',[
 bot.dialog('GSTandPAN_NoDialog',[
     function (session, args, next) {
 
-        //createFamilyItem(session.userData.botID, session.userData.conversationID, session.userData.userID,session.userData.userName,session.message.text,"UserResponse");      
-        BotID="13";
+
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
-         
-       //  createFamilyItem(BotId,ConversationId,UserId,UserName,session.message.text,UserResponse); 
- 
-         createFamilyItem(BotID, ConversationId,UserId,UserName,session.message.text,"UserResponse");      
-    
-     
-       
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+      
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
 
         if(args.Entity==true)
         {                
@@ -882,6 +824,15 @@ bot.dialog('GSTandPAN_NoDialog',[
 bot.dialog('ExtensionDialog',[
     function (session, args, next) {
 
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+      
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
 
        if(args.Entity==true)
        {                
@@ -1068,8 +1019,17 @@ bot.dialog('ExtensionDialog',[
 //vendor all document
 bot.dialog('AllDocumentDialog',[
     function (session, args, next) {
-    createFamilyItem(session.userData.botID, session.userData.conversationID, session.userData.userID,session.userData.userName,session.message.text,"UserResponse");      
-      
+
+        //for cosmos db storage
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;     
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+      //end
+
+
        if(args.Entity==true)
        {                
        }
@@ -1311,6 +1271,16 @@ bot.dialog('AllDocumentDialog',[
 bot.dialog('MaterialDialog',[
     function (session, args, next) {
 
+        //for cosmos db storage
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;     
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+       //end
+
+
         intent = args.intent;
         session.conversationData[GloabalIntent] = intent.intent;    
        
@@ -1479,8 +1449,19 @@ bot.dialog('MaterialDialog',[
 bot.dialog('ServiceDialog',[
     function (session, args, next) {
 
-        intent = args.intent;
-        session.conversationData[GloabalIntent] = intent.intent;    
+
+        //for cosmos db storage
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;     
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+      //end
+
+
+    intent = args.intent;
+    session.conversationData[GloabalIntent] = intent.intent;    
        
        
 
@@ -1611,6 +1592,16 @@ bot.dialog('ServiceDialog',[
 //request details bot
 bot.dialog('RequestDetailsDialog',[
     function (session, args, next) {
+
+        //for cosmos db storage
+        BotID=session.conversationData.botID;
+        BotName=jsonParse.address.bot.name;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;     
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+        //end
+
 
         intent = args.intent;
         session.conversationData[GloabalIntent] = intent.intent;   
@@ -3431,11 +3422,7 @@ function createFamilyItem(BotId,BotName,ConversationId,UserId,UserName,UserQuery
         "UserName": UserName,
         "UserQuery":UserQuery,
         "UserResponse":UserResponse
-          
-       
    }};
-
-
    try {
      var { item } =  client.database(databaseId).container(containerId).items.create(documentDefinition);
            console.log(`Created family item with id:\n${documentDefinition.id}\n`);      
