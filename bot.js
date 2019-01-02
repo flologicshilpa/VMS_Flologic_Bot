@@ -194,6 +194,7 @@ bot.dialog('GreetingDialog',[
      
          var jsonData = JSON.stringify(session.message);
          var jsonParse = JSON.parse(jsonData);
+        session.send("%s",jsonData);
         
         session.conversationData[GlobalADID]=id;        
         //session.conversationData[GloabalIntent] = intent.intent;       
