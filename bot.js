@@ -152,7 +152,7 @@ bot.dialog('GreetingDialog',[
                  
       // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
       
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");      
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"Conversation Start...");      
        
 
    var card = {  
@@ -192,11 +192,7 @@ bot.dialog('GreetingDialog',[
 
         session.send('How may I help you?');  
         
-      
-     
-
-
-       // session.send("%s",username1)    
+        // session.send("%s",username1)    
         session.endDialog();
     }
 ]).triggerAction({
@@ -207,6 +203,19 @@ bot.dialog('GreetingDialog',[
 //end Conversation Dialog
 bot.dialog('endConversationDialog',[
     function (session, args, next) {
+
+       
+          //for cosmos db store data
+        BotID=session.conversationData.botID;
+        BotName= session.conversationData.botName;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"Conversation End..");
+      //end cosmos db 
+
         session.conversationData = {};
 
         var name=session.message.user.name;
@@ -222,6 +231,19 @@ bot.dialog('endConversationDialog',[
 //no intent and entity Dialog
 bot.dialog('NoneDialog',[
     function (session, args, next) {
+
+       intent = args.intent;            
+       session.conversationData[GloabalIntent] = intent.intent;
+         //for cosmos db store data
+       BotID=session.conversationData.botID;
+       BotName= session.conversationData.botName;
+       UserName= session.conversationData.userName;
+       UserId=session.conversationData.userID;
+       ConversationId=session.conversationData.conversationID;
+                
+     // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+     //end cosmos db 
         session.send('Please narrow your search.');        
         session.endDialog();
     }
@@ -237,16 +259,7 @@ var str3="";
 bot.dialog('AllDetailsDialog',[
     function (session, args, next) {
 
-       BotID=session.conversationData.botID;
-       BotName= session.conversationData.botName;
-       UserName= session.conversationData.userName;
-       UserId=session.conversationData.userID;
-       ConversationId=session.conversationData.conversationID;
-                
-     // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
-     
-       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-     
+      
        //name not present in query
         if(args.Entity==true)
         {                
@@ -268,7 +281,20 @@ bot.dialog('AllDetailsDialog',[
                 session.conversationData[GlobalVendorName]="";
                 session.conversationData[GlobalPanGSTCode]="";
              }
-        }                 
+        } 
+        
+        BotID=session.conversationData.botID;
+        BotName= session.conversationData.botName;
+        UserName= session.conversationData.userName;
+        UserId=session.conversationData.userID;
+        ConversationId=session.conversationData.conversationID;
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+      
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+      
+
+
         if(session.conversationData[Gloabalentity])
         {
             panentity = builder.EntityRecognizer.findEntity(intent.entities,'pan-code');
@@ -525,7 +551,7 @@ bot.dialog('GSTandPAN_NoDialog',[
                  
       // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
       
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
 
         if(args.Entity==true)
         {                
@@ -824,16 +850,7 @@ bot.dialog('GSTandPAN_NoDialog',[
 bot.dialog('ExtensionDialog',[
     function (session, args, next) {
 
-        BotID=session.conversationData.botID;
-        BotName= session.conversationData.botName;
-        UserName= session.conversationData.userName;
-        UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;
-                 
-      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
-      
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-
+       
        if(args.Entity==true)
        {                
        }
@@ -854,6 +871,17 @@ bot.dialog('ExtensionDialog',[
                session.conversationData[GlobalVendorName]="";
             }
        }  
+
+       BotID=session.conversationData.botID;
+       BotName= session.conversationData.botName;
+       UserName= session.conversationData.userName;
+       UserId=session.conversationData.userID;
+       ConversationId=session.conversationData.conversationID;
+                
+     // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+     
+       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+
 
        //Get Data From Web Api
         if(session.conversationData[Gloabalentity])
@@ -1020,15 +1048,6 @@ bot.dialog('ExtensionDialog',[
 bot.dialog('AllDocumentDialog',[
     function (session, args, next) {
 
-        //for cosmos db storage
-        BotID=session.conversationData.botID;
-        BotName= session.conversationData.botName;
-        UserName= session.conversationData.userName;
-        UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;     
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-      //end
-
 
        if(args.Entity==true)
        {                
@@ -1051,6 +1070,17 @@ bot.dialog('AllDocumentDialog',[
             }
        }  
 
+
+       //for cosmos db store data
+       BotID=session.conversationData.botID;
+       BotName= session.conversationData.botName;
+       UserName= session.conversationData.userName;
+       UserId=session.conversationData.userID;
+       ConversationId=session.conversationData.conversationID;
+                
+     // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+       createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+     //end cosmos db 
        
         //Get Data From Web Api
         if(session.conversationData[Gloabalentity])
@@ -1271,20 +1301,20 @@ bot.dialog('AllDocumentDialog',[
 bot.dialog('MaterialDialog',[
     function (session, args, next) {
 
-        //for cosmos db storage
+       
+        intent = args.intent;
+        session.conversationData[GloabalIntent] = intent.intent;    
+       
+        //for cosmos db store data
         BotID=session.conversationData.botID;
         BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;     
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-       //end
-
-
-        intent = args.intent;
-        session.conversationData[GloabalIntent] = intent.intent;    
-       
-       
+        ConversationId=session.conversationData.conversationID;
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+      //end cosmos db 
 
   //Get Data From Web Api
     if(builder.EntityRecognizer.findEntity(intent.entities,'Code'))
@@ -1450,20 +1480,21 @@ bot.dialog('ServiceDialog',[
     function (session, args, next) {
 
 
-        //for cosmos db storage
+       
+    intent = args.intent;
+    session.conversationData[GloabalIntent] = intent.intent;    
+       
+        //for cosmos db store data
         BotID=session.conversationData.botID;
         BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;     
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-      //end
+        ConversationId=session.conversationData.conversationID;
+                 
+      // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+      //end cosmos db 
 
-
-    intent = args.intent;
-    session.conversationData[GloabalIntent] = intent.intent;    
-       
-       
 
   //Get Data From Web Api
     if(builder.EntityRecognizer.findEntity(intent.entities,'Code'))
@@ -1593,18 +1624,25 @@ bot.dialog('ServiceDialog',[
 bot.dialog('RequestDetailsDialog',[
     function (session, args, next) {
 
-        //for cosmos db storage
+       
+
+        intent = args.intent;
+        session.conversationData[GloabalIntent] = intent.intent;   
+
+        //for cosmos db store data
         BotID=session.conversationData.botID;
         BotName= session.conversationData.botName;
         UserName= session.conversationData.userName;
         UserId=session.conversationData.userID;
-        ConversationId=session.conversationData.conversationID;     
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"UserResponse");
-        //end
+        ConversationId=session.conversationData.conversationID;
+                
+        // session.send("botid=%s botName=%s UserName=%s UserId=%s ConversationId=%s Date=%s DateTime=%s",BotID,BotName,UserName,UserId,ConversationId,date,datetime);
+        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,session.conversationData[GloabalIntent]);
+        //end cosmos db 
 
 
-        intent = args.intent;
-        session.conversationData[GloabalIntent] = intent.intent;   
+
+
         if(builder.EntityRecognizer.findEntity(intent.entities,'Name')) 
         {
         entity = builder.EntityRecognizer.findEntity(intent.entities,'Name');
