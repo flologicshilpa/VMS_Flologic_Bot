@@ -2616,12 +2616,12 @@ function getCardsAttachmentsForMaterialDetails(session,abc)
 {  
         var attachments=[];
         var i,j;
-        var extensionlist="";
+       
        var statusimage;
 
         for(i=0;i<abc.length;i++)
         {
-            
+             var extensionlist="";
             //loop for find extension list 
             for(j=0;j<abc[i].EXTENSION_LIST.length;j++)
             {
@@ -2654,13 +2654,13 @@ function getCardsAttachmentsForMaterialDetails(session,abc)
                                                     "type": "TextBlock",
                                                     "size": "Medium",
                                                     "weight": "Bolder",
-                                                    "text": abc[0].MATERIAL_DESCRIPTION,
+                                                    "text": abc[i].MATERIAL_DESCRIPTION,
                                                     "wrap": true
                                                 },
                                                 {
                                                     "type": "TextBlock",
                                                     "spacing": "None",
-                                                    "text": abc[0].MATERIAL_NUMBER,
+                                                    "text": abc[i].MATERIAL_NUMBER,
                                                     "isSubtle": true,
                                                     "wrap": true
                                                 }
